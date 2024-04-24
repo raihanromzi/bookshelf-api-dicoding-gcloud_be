@@ -24,7 +24,7 @@ class BookService {
     } = payload;
 
     if (name === '') {
-      throw new InvariantError(messages.BOOK.ERROR.INVALID_NAME);
+      throw new ClientError(messages.BOOK.ERROR.INVALID_NAME);
     }
 
     if (

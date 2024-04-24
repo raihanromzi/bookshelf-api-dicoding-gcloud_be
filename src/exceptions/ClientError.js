@@ -1,5 +1,7 @@
+import messages from '../utils/messages';
+
 class ClientError extends Error {
-  constructor(message, statusCode = 400) {
+  constructor(message, statusCode = messages.HTTP.ERROR.CODE.BAD_REQUEST) {
     super(message);
     this.statusCode = statusCode;
     this.name = 'ClientError';
