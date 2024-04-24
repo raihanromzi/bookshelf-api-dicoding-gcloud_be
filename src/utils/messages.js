@@ -12,6 +12,7 @@ const httpSuccess = {
 const httpErrors = {
   CODE: {
     BAD_REQUEST: 400,
+    NOT_FOUND: 404,
   },
   STATUS: {
     BAD_REQUEST: 'fail',
@@ -32,6 +33,8 @@ const messages = {
         'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
       INVALID_NAME: 'Gagal menambahkan buku. Mohon isi nama buku',
       FAILED_ADD: 'Buku gagal ditambahkan',
+      INVALID_ID: 'Buku tidak ditemukan',
+      BOOK_NOT_FOUND: 'Buku tidak ditemukan',
     },
   },
 };

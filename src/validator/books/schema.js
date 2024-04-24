@@ -14,4 +14,10 @@ const BookPayloadSchema = Joi.object({
   reading: Joi.boolean().required(),
 });
 
-export default BookPayloadSchema;
+const BookIdPayloadSchema = Joi.object({
+  bookId: Joi.string().required().messages({
+    'any.required': messages.BOOK.ERROR.INVALID_ID,
+  }),
+});
+
+export { BookIdPayloadSchema, BookPayloadSchema };

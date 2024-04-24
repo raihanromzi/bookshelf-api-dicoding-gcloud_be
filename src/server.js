@@ -17,12 +17,10 @@ const init = async () => {
     },
   });
 
-  const bookService = new BooksService();
-
   await server.register({
     plugin: books,
     options: {
-      service: bookService,
+      service: new BooksService(),
       validator: BookValidator,
     },
   });
@@ -31,12 +29,12 @@ const init = async () => {
     const { response } = request;
 
     if (response instanceof ClientError) {
-      const newResponse = h.response({
-        status: 'fail',
-        message: response.message,
-      });
-      newResponse.code(response.statusCode);
-      return newResponse;
+      return h
+        .response({
+          status: 'fail',
+          message: response.message,
+        })
+        .code(response.statusCode);
     }
 
     return h.continue;

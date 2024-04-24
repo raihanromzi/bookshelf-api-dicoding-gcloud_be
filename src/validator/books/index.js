@@ -1,10 +1,17 @@
-import BookPayloadSchema from './schema.js';
+import ClientError from '../../exceptions/ClientError.js';
+import { BookPayloadSchema, BookIdPayloadSchema } from './schema.js';
 
 const BookValidator = {
   validateBookPayload: (payload) => {
     const validationResult = BookPayloadSchema.validate(payload);
     if (validationResult.error) {
-      throw new Error(validationResult.error.message);
+      throw new ClientError(validationResult.error.message);
+    }
+  },
+  validateBookId: (bookId) => {
+    const validationResult = BookIdPayloadSchema.validate(bookId);
+    if (validationResult.error) {
+      throw new ClientError(validationResult.error.message);
     }
   },
 };

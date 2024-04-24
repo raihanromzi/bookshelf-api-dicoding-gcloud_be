@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import messages from '../../utils/messages.js';
 import ClientError from '../../exceptions/ClientError.js';
+import InvariantError from '../../exceptions/InvariantError.js';
 import logger from '../../logging/logging.js';
 
 class BookService {
@@ -8,6 +9,7 @@ class BookService {
     this.books = [];
     this.addBook = this.addBook.bind(this);
     this.getBooks = this.getBooks.bind(this);
+    this.getBookById = this.getBookById.bind(this);
   }
 
   addBook(payload) {
@@ -84,7 +86,18 @@ class BookService {
     }));
   }
 
-  // getBookById() {}
+  getBookById(bookId) {
+    const book = this.books.find((b) => b.id === bookId);
+
+    if (!book) {
+      throw new ClientError(
+        messages.BOOK.ERROR.BOOK_NOT_FOUND,
+        messages.HTTP.ERROR.CODE.NOT_FOUND
+      );
+    }
+
+    return book;
+  }
 
   // editBookById() {}
 

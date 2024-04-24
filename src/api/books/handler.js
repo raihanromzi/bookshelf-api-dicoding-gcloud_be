@@ -1,4 +1,4 @@
-import ClientError from '../../exceptions/ClientError.js';
+import logger from '../../logging/logging.js';
 import messages from '../../utils/messages.js';
 import { responseSuccess } from '../../utils/responseAPI.js';
 
@@ -8,50 +8,46 @@ class BookHandler {
     this.validator = validator;
     this.postBookHandler = this.postBookHandler.bind(this);
     this.getBooksHandler = this.getBooksHandler.bind(this);
+    this.getBookByIdHandler = this.getBookByIdHandler.bind(this);
   }
 
   postBookHandler(request, h) {
-    try {
-      this.validator.validateBookPayload(request.payload);
-      const newBook = this.service.addBook(request.payload);
-      return h
-        .response(
-          responseSuccess(
-            messages.HTTP.SUCCESS.STATUS.CREATED,
-            messages.BOOK.SUCCESS.ADD,
-            newBook
-          )
+    this.validator.validateBookPayload(request.payload);
+    const newBook = this.service.addBook(request.payload);
+    return h
+      .response(
+        responseSuccess(
+          messages.HTTP.SUCCESS.STATUS.CREATED,
+          messages.BOOK.SUCCESS.ADD,
+          newBook
         )
-        .code(messages.HTTP.SUCCESS.CODE.CREATED);
-    } catch (error) {
-      if (error instanceof ClientError) {
-        return h
-          .response({
-            status: 'fail',
-            message: error.message,
-          })
-          .code(error.statusCode);
-      }
-
-      return h
-        .response({
-          status: messages.HTTP.ERROR.STATUS.BAD_REQUEST,
-          message: error.message,
-        })
-        .code(messages.HTTP.ERROR.CODE.BAD_REQUEST);
-    }
+      )
+      .code(messages.HTTP.SUCCESS.CODE.CREATED);
   }
 
   getBooksHandler(request, h) {
-    const books = this.service.getBooks();
+    const booksData = this.service.getBooks();
 
     return h
       .response(
         responseSuccess(
           messages.HTTP.SUCCESS.STATUS.OK,
           messages.BOOK.SUCCESS.GET,
-          { books: books }
+          { books: booksData }
         )
+      )
+      .code(messages.HTTP.SUCCESS.CODE.OK);
+  }
+
+  getBookByIdHandler(request, h) {
+    const { bookId } = request.params;
+
+    this.validator.validateBookId({ bookId });
+    const bookData = this.service.getBookById(bookId);
+
+    return h
+      .response(
+        responseSuccess(messages.HTTP.SUCCESS.STATUS.OK, '', { book: bookData })
       )
       .code(messages.HTTP.SUCCESS.CODE.OK);
   }
