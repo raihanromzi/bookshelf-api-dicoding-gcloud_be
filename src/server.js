@@ -3,6 +3,7 @@ import 'dotenv/config';
 import logger from './logging/logging.js';
 import books from './api/books/index.js';
 import BooksService from './services/inMemory/BooksService.js';
+import BookValidator from './validator/books/index.js';
 
 const init = async () => {
   const server = Hapi.server({
@@ -21,6 +22,7 @@ const init = async () => {
     plugin: books,
     options: {
       service: bookService,
+      validator: BookValidator,
     },
   });
 

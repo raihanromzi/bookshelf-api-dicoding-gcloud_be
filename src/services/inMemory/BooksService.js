@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import messages from '../../utils/messages.js';
+import ClientError from '../../exceptions/ClientError.js';
 
 class BookService {
   constructor() {
@@ -23,23 +24,23 @@ class BookService {
     } = payload;
 
     if (name === '') {
-      throw new Error(messages.BOOK.ERROR.INVALID_NAME);
+      throw new InvariantError(messages.BOOK.ERROR.INVALID_NAME);
     }
 
     if (
-      name === ''
-      || year === ''
-      || author === ''
-      || summary === ''
-      || publisher === ''
-      || pageCount === ''
-      || readPage === ''
+      name === '' ||
+      year === '' ||
+      author === '' ||
+      summary === '' ||
+      publisher === '' ||
+      pageCount === '' ||
+      readPage === ''
     ) {
-      throw new Error(messages.BOOK.ERROR.FAILED_ADD);
+      throw new ClientError(messages.BOOK.ERROR.FAILED_ADD);
     }
 
     if (readPage > pageCount) {
-      throw new Error(messages.BOOK.ERROR.READPAGE_GT_PAGECOUNT);
+      throw new ClientError(messages.BOOK.ERROR.READPAGE_GT_PAGECOUNT);
     }
 
     const bookId = nanoid(16);
@@ -63,10 +64,11 @@ class BookService {
 
     this.books.push(newBook);
 
-    const isSuccess = this.books.filter((book) => book.bookId === bookId).length > 0;
+    const isSuccess =
+      this.books.filter((book) => book.bookId === bookId).length > 0;
 
     if (!isSuccess) {
-      throw new Error(messages.BOOK.ERROR.FAILED_ADD);
+      throw new ClientError(messages.BOOK.ERROR.FAILED_ADD);
     }
 
     return newBook;
