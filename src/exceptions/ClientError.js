@@ -1,4 +1,4 @@
-import messages from '../utils/messages';
+import messages from '../utils/messages.js';
 
 class ClientError extends Error {
   constructor(message, statusCode = messages.HTTP.ERROR.CODE.BAD_REQUEST) {
