@@ -4,6 +4,7 @@ import logger from './logging/logging.js';
 import books from './api/books/index.js';
 import BooksService from './services/inMemory/BooksService.js';
 import BookValidator from './validator/books/index.js';
+import ClientError from './exceptions/ClientError.js';
 
 const init = async () => {
   const server = Hapi.server({
@@ -24,6 +25,21 @@ const init = async () => {
       service: bookService,
       validator: BookValidator,
     },
+  });
+
+  server.ext('onPreResponse', (request, h) => {
+    const { response } = request;
+
+    if (response instanceof ClientError) {
+      const newResponse = h.response({
+        status: 'fail',
+        message: response.message,
+      });
+      newResponse.code(response.statusCode);
+      return newResponse;
+    }
+
+    return h.continue;
   });
 
   await server.start();

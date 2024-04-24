@@ -4,7 +4,7 @@ const httpSuccess = {
     CREATED: 201,
   },
   STATUS: {
-    OK: 'OK',
+    OK: 'success',
     CREATED: 'success',
   },
 };

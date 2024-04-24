@@ -7,6 +7,7 @@ class BookHandler {
     this.service = service;
     this.validator = validator;
     this.postBookHandler = this.postBookHandler.bind(this);
+    this.getBooksHandler = this.getBooksHandler.bind(this);
   }
 
   postBookHandler(request, h) {
@@ -39,6 +40,20 @@ class BookHandler {
         })
         .code(messages.HTTP.ERROR.CODE.BAD_REQUEST);
     }
+  }
+
+  getBooksHandler(request, h) {
+    const books = this.service.getBooks();
+
+    return h
+      .response(
+        responseSuccess(
+          messages.HTTP.SUCCESS.STATUS.OK,
+          messages.BOOK.SUCCESS.GET,
+          { books: books }
+        )
+      )
+      .code(messages.HTTP.SUCCESS.CODE.OK);
   }
 }
 

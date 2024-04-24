@@ -4,6 +4,11 @@ const routes = (handler) => [
     path: '/books',
     handler: handler.postBookHandler,
   },
+  {
+    method: 'GET',
+    path: '/books',
+    handler: handler.getBooksHandler,
+  },
 ];
 
 export default routes;
