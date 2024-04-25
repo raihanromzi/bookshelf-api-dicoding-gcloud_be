@@ -1,8 +1,6 @@
 import { nanoid } from 'nanoid';
 import messages from '../../utils/messages.js';
 import ClientError from '../../exceptions/ClientError.js';
-import InvariantError from '../../exceptions/InvariantError.js';
-import logger from '../../logging/logging.js';
 
 class BookService {
   constructor() {
@@ -27,22 +25,6 @@ class BookService {
       readPage = '',
       reading = '',
     } = payload;
-
-    if (name === '') {
-      throw new ClientError(messages.BOOK.ERROR.INVALID_NAME);
-    }
-
-    if (
-      name === '' ||
-      year === '' ||
-      author === '' ||
-      summary === '' ||
-      publisher === '' ||
-      pageCount === '' ||
-      readPage === ''
-    ) {
-      throw new ClientError(messages.BOOK.ERROR.FAILED_ADD);
-    }
 
     if (readPage > pageCount) {
       throw new ClientError(messages.BOOK.ERROR.READPAGE_GT_PAGECOUNT);
@@ -99,7 +81,50 @@ class BookService {
     return book;
   }
 
-  // editBookById() {}
+  editBookById(bookId, payload) {
+    if (!payload) {
+      throw new ClientError(messages.BOOK.ERROR.FAILED_UPDATE);
+    }
+
+    const {
+      name = '',
+      year = '',
+      author = '',
+      summary = '',
+      publisher = '',
+      pageCount = '',
+      readPage = '',
+      reading = '',
+    } = payload;
+
+    if (readPage > pageCount) {
+      throw new ClientError(messages.BOOK.ERROR.READPAGE_GT_PAGECOUNT_UPDATE);
+    }
+
+    const index = this.books.findIndex((b) => b.id === bookId);
+
+    if (index === -1) {
+      throw new ClientError(
+        messages.BOOK.ERROR.ID_NOT_FOUND,
+        messages.HTTP.ERROR.CODE.NOT_FOUND
+      );
+    }
+
+    const updatedAt = new Date().toISOString();
+
+    this.books[index] = {
+      ...this.books[index],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+      updatedAt,
+    };
+  }
 
   // deleteBookById() {}
 }

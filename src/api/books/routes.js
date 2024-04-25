@@ -14,6 +14,11 @@ const routes = (handler) => [
     path: '/books/{bookId}',
     handler: handler.getBookByIdHandler,
   },
+  {
+    method: 'PUT',
+    path: '/books/{bookId}',
+    handler: handler.putBookByIdHandler,
+  },
 ];
 
 export default routes;

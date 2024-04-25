@@ -5,6 +5,7 @@ import books from './api/books/index.js';
 import BooksService from './services/inMemory/BooksService.js';
 import BookValidator from './validator/books/index.js';
 import ClientError from './exceptions/ClientError.js';
+import messages from './utils/messages.js';
 
 const init = async () => {
   const server = Hapi.server({
@@ -31,7 +32,7 @@ const init = async () => {
     if (response instanceof ClientError) {
       return h
         .response({
-          status: 'fail',
+          status: messages.HTTP.ERROR.STATUS.BAD_REQUEST,
           message: response.message,
         })
         .code(response.statusCode);

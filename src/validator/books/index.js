@@ -1,5 +1,9 @@
 import ClientError from '../../exceptions/ClientError.js';
-import { BookPayloadSchema, BookIdPayloadSchema } from './schema.js';
+import {
+  BookPayloadSchema,
+  BookIdPayloadSchema,
+  BookPayloadUpdateSchema,
+} from './schema.js';
 
 const BookValidator = {
   validateBookPayload: (payload) => {
@@ -10,6 +14,12 @@ const BookValidator = {
   },
   validateBookId: (bookId) => {
     const validationResult = BookIdPayloadSchema.validate(bookId);
+    if (validationResult.error) {
+      throw new ClientError(validationResult.error.message);
+    }
+  },
+  validateUpdateBookPayload: (payload) => {
+    const validationResult = BookPayloadUpdateSchema.validate(payload);
     if (validationResult.error) {
       throw new ClientError(validationResult.error.message);
     }

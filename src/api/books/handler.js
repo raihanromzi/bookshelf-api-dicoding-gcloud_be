@@ -1,4 +1,3 @@
-import logger from '../../logging/logging.js';
 import messages from '../../utils/messages.js';
 import { responseSuccess } from '../../utils/responseAPI.js';
 
@@ -9,6 +8,7 @@ class BookHandler {
     this.postBookHandler = this.postBookHandler.bind(this);
     this.getBooksHandler = this.getBooksHandler.bind(this);
     this.getBookByIdHandler = this.getBookByIdHandler.bind(this);
+    this.putBookByIdHandler = this.putBookByIdHandler.bind(this);
   }
 
   postBookHandler(request, h) {
@@ -48,6 +48,41 @@ class BookHandler {
     return h
       .response(
         responseSuccess(messages.HTTP.SUCCESS.STATUS.OK, '', { book: bookData })
+      )
+      .code(messages.HTTP.SUCCESS.CODE.OK);
+  }
+
+  putBookByIdHandler(request, h) {
+    const { bookId } = request.params;
+    const {
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+    } = request.payload;
+
+    this.validator.validateBookId({ bookId });
+    this.validator.validateUpdateBookPayload({
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+    });
+    this.service.editBookById(bookId, request.payload);
+    return h
+      .response(
+        responseSuccess(
+          messages.HTTP.SUCCESS.STATUS.OK,
+          messages.BOOK.SUCCESS.EDIT
+        )
       )
       .code(messages.HTTP.SUCCESS.CODE.OK);
   }
