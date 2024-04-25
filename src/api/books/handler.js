@@ -28,7 +28,8 @@ class BookHandler {
   }
 
   getBooksHandler(request, h) {
-    const booksData = this.service.getBooks();
+    const { name, reading, finished } = request.query;
+    const booksData = this.service.getBooks({ name, reading, finished });
 
     return h
       .response(

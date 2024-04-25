@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import messages from '../../utils/messages.js';
 import ClientError from '../../exceptions/ClientError.js';
+import logger from '../../logging/logging.js';
 
 class BookService {
   constructor() {
@@ -61,7 +62,39 @@ class BookService {
     return { bookId: newBook.id };
   }
 
-  getBooks() {
+  getBooks({ name, reading, finished }) {
+    if (name) {
+      return this.books
+        .filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
+        .map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        }));
+    }
+
+    if (reading) {
+      const isReading = reading === '1';
+      return this.books
+        .filter((book) => book.reading === isReading)
+        .map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        }));
+    }
+
+    if (finished) {
+      const isFinished = finished === '1';
+      return this.books
+        .filter((book) => book.finished === isFinished)
+        .map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        }));
+    }
+
     return this.books.map((book) => ({
       id: book.id,
       name: book.name,
