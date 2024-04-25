@@ -1,7 +1,6 @@
 import { nanoid } from 'nanoid';
 import messages from '../../utils/messages.js';
 import ClientError from '../../exceptions/ClientError.js';
-import logger from '../../logging/logging.js';
 
 class BookService {
   constructor() {

@@ -1,6 +1,5 @@
 import messages from '../../utils/messages.js';
 import { responseSuccess } from '../../utils/responseAPI.js';
-import logger from '../../logging/logging.js';
 
 class BookHandler {
   constructor(service, validator) {
