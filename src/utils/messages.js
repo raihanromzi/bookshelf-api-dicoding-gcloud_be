@@ -28,6 +28,7 @@ const messages = {
     SUCCESS: {
       ADD: 'Buku berhasil ditambahkan',
       EDIT: 'Buku berhasil diperbarui',
+      DELETE: 'Buku berhasil dihapus',
     },
     ERROR: {
       READPAGE_GT_PAGECOUNT:
@@ -41,6 +42,7 @@ const messages = {
       READPAGE_GT_PAGECOUNT_UPDATE:
         'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
       ID_NOT_FOUND: 'Gagal memperbarui buku. Id tidak ditemukan',
+      ID_NOT_FOUND_DELETE: 'Buku gagal dihapus. Id tidak ditemukan',
     },
   },
 };

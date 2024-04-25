@@ -19,6 +19,11 @@ const routes = (handler) => [
     path: '/books/{bookId}',
     handler: handler.putBookByIdHandler,
   },
+  {
+    method: 'DELETE',
+    path: '/books/{bookId}',
+    handler: handler.deleteBookByIdHandler,
+  },
 ];
 
 export default routes;

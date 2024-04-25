@@ -1,5 +1,6 @@
 import messages from '../../utils/messages.js';
 import { responseSuccess } from '../../utils/responseAPI.js';
+import logger from '../../logging/logging.js';
 
 class BookHandler {
   constructor(service, validator) {
@@ -9,6 +10,7 @@ class BookHandler {
     this.getBooksHandler = this.getBooksHandler.bind(this);
     this.getBookByIdHandler = this.getBookByIdHandler.bind(this);
     this.putBookByIdHandler = this.putBookByIdHandler.bind(this);
+    this.deleteBookByIdHandler = this.deleteBookByIdHandler.bind(this);
   }
 
   postBookHandler(request, h) {
@@ -82,6 +84,21 @@ class BookHandler {
         responseSuccess(
           messages.HTTP.SUCCESS.STATUS.OK,
           messages.BOOK.SUCCESS.EDIT
+        )
+      )
+      .code(messages.HTTP.SUCCESS.CODE.OK);
+  }
+
+  deleteBookByIdHandler(request, h) {
+    const { bookId } = request.params;
+
+    this.validator.validateBookId({ bookId });
+    this.service.deleteBookById(bookId);
+    return h
+      .response(
+        responseSuccess(
+          messages.HTTP.SUCCESS.STATUS.OK,
+          messages.BOOK.SUCCESS.DELETE
         )
       )
       .code(messages.HTTP.SUCCESS.CODE.OK);

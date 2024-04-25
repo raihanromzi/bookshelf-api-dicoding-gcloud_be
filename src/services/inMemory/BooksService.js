@@ -8,6 +8,7 @@ class BookService {
     this.addBook = this.addBook.bind(this);
     this.getBooks = this.getBooks.bind(this);
     this.getBookById = this.getBookById.bind(this);
+    this.deleteBookById = this.deleteBookById.bind(this);
   }
 
   addBook(payload) {
@@ -126,7 +127,18 @@ class BookService {
     };
   }
 
-  // deleteBookById() {}
+  deleteBookById(bookId) {
+    const index = this.books.findIndex((b) => b.id === bookId);
+
+    if (index === -1) {
+      throw new ClientError(
+        messages.BOOK.ERROR.ID_NOT_FOUND_DELETE,
+        messages.HTTP.ERROR.CODE.NOT_FOUND
+      );
+    }
+
+    this.books.splice(index, 1);
+  }
 }
 
 export default BookService;
